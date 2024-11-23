@@ -8,6 +8,9 @@ typedef struct
     int y;
 } Pos;
 
+// iteration 0
+// should be correct
+// used for player and iteraton 2b for food
 class objPos
 {
     public:
@@ -19,7 +22,11 @@ class objPos
         
         // Respect the rule of six / minimum four
         // [TODO] Implement the missing special member functions to meet the minimum four rule
-        
+        ~objPos();
+        objPos(const objPos &oP);
+		objPos& operator=(const objPos &m);
+
+
         void setObjPos(objPos o);        
         void setObjPos(int xPos, int yPos, char sym);  
 

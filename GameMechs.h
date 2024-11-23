@@ -21,9 +21,11 @@ class GameMechs
         int boardSizeY;
 
         objPos food;
+        char** map;
 
     public:
         GameMechs();
+        // this is implemented
         GameMechs(int boardX, int boardY);
         ~GameMechs(); // is this one needed at all? Why or why not?
         
@@ -31,7 +33,7 @@ class GameMechs
         void setExitTrue();
         bool getLoseFlagStatus() const;
         void setLoseFlag();
-
+        // i also implemented this for checking iteration 1a
         char getInput() const;
         void setInput(char this_input);
         void clearInput();
@@ -41,6 +43,10 @@ class GameMechs
         
         int getScore() const;
         void incrementScore();
+
+        // i will implement this for the map !!
+        char getElementMap(int y,int x);
+        void setElementMap(int y,int x, char sym);
         
         // More methods should be added here
 };
