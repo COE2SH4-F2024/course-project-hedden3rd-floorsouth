@@ -7,7 +7,7 @@
 
 class Player
 {
-    // Construct the remaining declaration from the project manual.
+    // Construct the remaining decslaration from the project manual.
 
     // Only some sample members are included here
 
@@ -19,15 +19,18 @@ class Player
 
         Player(GameMechs* thisGMRef);
         ~Player();
+        Player(const Player &p);
+        Player &operator=(const Player &p);
 
-        objPos getPlayerPos() const; // Upgrade this in iteration 3.       
+        objPosArrayList* getPlayerPos() const; // Upgrade this in iteration 3.       
         void updatePlayerDir();
         void movePlayer();
 
         // More methods to be added here
 
     private:
-        objPos playerPos; // Upgrade this in iteration 3.       
+        //objPos playerPos; // Upgrade this in iteration 3. 
+        objPosArrayList* playerPosList;      
         enum Dir myDir;
 
         // Need a reference to the Main Game Mechanisms

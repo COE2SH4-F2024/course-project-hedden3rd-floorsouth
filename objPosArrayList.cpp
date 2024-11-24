@@ -16,6 +16,33 @@ objPosArrayList::~objPosArrayList()
     delete[] aList;
 }
 
+objPosArrayList::objPosArrayList(const objPosArrayList &oL)
+{
+    if (this != &oL)
+        {
+            this->arrayCapacity = oL.arrayCapacity;
+            this->listSize = oL.listSize;
+            aList = new objPos[arrayCapacity]; 
+            for (int i =0;i<listSize;i++)
+            {
+                this->aList[i] = oL.aList[i];
+            }
+        }   
+}
+
+objPosArrayList& objPosArrayList :: operator= (const objPosArrayList &oL)
+{
+    if (this != &oL)
+    {
+        this->arrayCapacity = oL.arrayCapacity;
+        this->listSize = oL.listSize;
+        for (int i =0;i<listSize;i++)
+        {
+            this->aList[i] = oL.aList[i];
+        }
+    }
+}
+
 int objPosArrayList::getSize() const
 {
     return listSize;
@@ -49,6 +76,23 @@ void objPosArrayList::insertTail(objPos thisPos)
     }   
 }
 
+void objPosArrayList::insertIndex(objPos thisPos,int index)
+{
+    if (listSize != arrayCapacity)
+    {
+        for(int i=0;i<index;i++)
+        {
+            aList[listSize-i].pos->x = aList[listSize-i-1].pos->x;
+            aList[listSize-i].pos->y = aList[listSize-i-1].pos->y;
+            aList[listSize-i].symbol = aList[listSize-i-1].symbol;
+        }
+        aList[index].pos->x = thisPos.pos->x;
+        aList[index].pos->y = thisPos.pos->y;
+        aList[index].symbol = thisPos.symbol;    
+        listSize+=1; 
+    }   
+}
+
 void objPosArrayList::removeHead()
 {
     if (listSize != arrayCapacity)
@@ -72,6 +116,19 @@ void objPosArrayList::removeTail()
         aList[listSize-1].symbol = 0;    
         listSize-=1; 
     } 
+}
+void objPosArrayList::removeIndex(int index)
+{
+    if (listSize != arrayCapacity)
+    {
+        for(int i=index;i<listSize;i++)
+        {
+            aList[i].pos->x = aList[i+1].pos->x;
+            aList[i].pos->y = aList[i+1].pos->y;
+            aList[i].symbol = aList[i+1].symbol;
+        }
+        listSize-=1; 
+    }
 }
 
 objPos objPosArrayList::getHeadElement() const

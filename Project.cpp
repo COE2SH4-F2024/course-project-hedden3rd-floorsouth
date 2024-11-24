@@ -70,7 +70,11 @@ void Initialize(void)
     //     }
     // }
     //map[playerpt->getPlayerPos().pos->y][playerpt->getPlayerPos().pos->x] = 42;
-    gamem->setElementMap(playerpt->getPlayerPos().pos->y,playerpt->getPlayerPos().pos->x,42);
+    for (int i=0;i<playerpt->getPlayerPos()->getSize();i++)
+    {
+        gamem->setElementMap(playerpt->getPlayerPos()->getElement(i).pos->y,playerpt->getPlayerPos()->getElement(i).pos->x,playerpt->getPlayerPos()->getElement(i).symbol);
+    }
+    
 }
 
 void GetInput(void)

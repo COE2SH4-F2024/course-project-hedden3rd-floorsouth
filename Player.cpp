@@ -5,9 +5,12 @@ Player::Player(GameMechs* thisGMRef)
 {
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
-
+    //playerPos = objPos(15,9,42);
     // more actions to be included
-    playerPos = objPos(15,9,42);
+    playerPosList = new objPosArrayList;
+    playerPosList->insertHead(objPos(15,9,42));
+    //playerPosList->insertTail(objPos(16,9,42));
+    //playerPosList->insertTail(objPos(17,9,42));
 }
 
 
@@ -17,10 +20,38 @@ Player::~Player()
     delete[] mainGameMechsRef;
 }
 
-objPos Player::getPlayerPos() const
+Player::Player(const Player &p)
+{
+    if (this != &p)
+        {
+            this->mainGameMechsRef = p.mainGameMechsRef;
+            this->myDir = p.myDir;
+            this->playerPosList = new objPosArrayList;
+            for (int i=0;i<p.playerPosList->getSize();i++)
+            {
+                this->playerPosList[i] = p.playerPosList[i];
+            }
+        }   
+}
+
+Player& Player :: operator= (const Player &p)
+{
+    if (this != &p)
+    {
+        this->mainGameMechsRef = p.mainGameMechsRef;
+        this->myDir = p.myDir;
+        for (int i=0;i<p.playerPosList->getSize();i++)
+        {
+            this->playerPosList[i] = p.playerPosList[i];
+        }
+    }
+}
+
+objPosArrayList* Player::getPlayerPos() const
 {
     // return the reference to the playerPos arrray list
-    return playerPos;
+    //return playerPos;
+    return playerPosList;
 }
 
 void Player::updatePlayerDir()
@@ -105,9 +136,16 @@ void Player::movePlayer()
     // PPA3 Finite State Machine logic
     if (myDir == LEFT)
     {
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,32);
-        playerPos.pos->x -=1;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,playerPos.symbol);
+        int new_x = playerPosList->getHeadElement().pos->x -1;
+        int new_y = playerPosList->getHeadElement().pos->y;
+        objPos newHead = playerPosList->getHeadElement();
+        newHead.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
+        playerPosList->insertHead(newHead);
+        playerPosList->removeTail();
+        // playerPosList->getHeadElement().pos->y = new_y;
+        // playerPosList->getHeadElement().pos->x = new_x;
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
         // player.x-=1;
         // board[player.y][player.x] = player.symbol;
     }
@@ -116,64 +154,109 @@ void Player::movePlayer()
         // board[player.y][player.x] = 32;
         // player.x +=1;
         // board[player.y][player.x] = player.symbol;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,32);
-        playerPos.pos->x +=1;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,playerPos.symbol);
+        int new_x = playerPosList->getHeadElement().pos->x +1;
+        int new_y = playerPosList->getHeadElement().pos->y;
+        objPos newHead = playerPosList->getHeadElement();
+        newHead.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
+        playerPosList->insertHead(newHead);
+        playerPosList->removeTail();
+        // playerPosList->getHeadElement().pos->y = new_y;
+        // playerPosList->getHeadElement().pos->x = new_x;
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
     else if (myDir == UP)
     {
         // board[player.y][player.x] = 32;
         // player.y -=1;
         // board[player.y][player.x] = player.symbol;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,32);
-        playerPos.pos->y -=1;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,playerPos.symbol);
+        int new_x = playerPosList->getHeadElement().pos->x;
+        int new_y = playerPosList->getHeadElement().pos->y-1;
+        objPos newHead = playerPosList->getHeadElement();
+        newHead.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
+        playerPosList->insertHead(newHead);
+        playerPosList->removeTail();
+        // playerPosList->getHeadElement().pos->y = new_y;
+        // playerPosList->getHeadElement().pos->x = new_x;
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
     else if (myDir == DOWN)
     {
         // board[player.y][player.x] = 32;
         // player.y +=1;
         // board[player.y][player.x] = player.symbol;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,32);
-        playerPos.pos->y +=1;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,playerPos.symbol);
+        int new_x = playerPosList->getHeadElement().pos->x;
+        int new_y = playerPosList->getHeadElement().pos->y+1;
+        objPos newHead = playerPosList->getHeadElement();
+        newHead.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
+        playerPosList->insertHead(newHead);
+        playerPosList->removeTail();
+        // playerPosList->getHeadElement().pos->y = new_y;
+        // playerPosList->getHeadElement().pos->x = new_x;
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
-
-    if (playerPos.pos->x <= 0)
+    
+    if (playerPosList->getHeadElement().pos->x <= 0)
     {
         // board[player.y][player.x] = 35;
         // player.x = 18;
         // board[player.y][player.x] = player.symbol;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,35);
-        playerPos.pos->x =(mainGameMechsRef->getBoardSizeX())-2;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,playerPos.symbol);
+        int new_x = (mainGameMechsRef->getBoardSizeX())-2;
+        int new_y = playerPosList->getHeadElement().pos->y;
+        objPos newSwitch = playerPosList->getHeadElement();
+        newSwitch.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,35);
+        //playerPosList->getHeadElement().pos->x =(mainGameMechsRef->getBoardSizeX())-2;
+        playerPosList->removeHead();
+        playerPosList->insertHead(newSwitch);
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
-    else if (playerPos.pos->x >= 29)
+    else if (playerPosList->getHeadElement().pos->x >= mainGameMechsRef->getBoardSizeX()-1)
     {
         // board[player.y][player.x] = 35;
         // player.x = 1;
         // board[player.y][player.x] = player.symbol;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,35);
-        playerPos.pos->x =1;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,playerPos.symbol);
+        int new_x = 1;
+        int new_y = playerPosList->getHeadElement().pos->y;
+        objPos newSwitch = playerPosList->getHeadElement();
+        newSwitch.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,35);
+        //playerPosList->getHeadElement().pos->x =(mainGameMechsRef->getBoardSizeX())-2;
+        playerPosList->removeHead();
+        playerPosList->insertHead(newSwitch);
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
-    else if (playerPos.pos->y <= 0)
+    else if (playerPosList->getHeadElement().pos->y <= 0)
     {
         // board[player.y][player.x] = 35;
         // player.y = 8;
         // board[player.y][player.x] = player.symbol;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,35);
-        playerPos.pos->y =(mainGameMechsRef->getBoardSizeY())-2;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,playerPos.symbol);
+        int new_x = playerPosList->getHeadElement().pos->x;
+        int new_y = (mainGameMechsRef->getBoardSizeY())-2;
+        objPos newSwitch = playerPosList->getHeadElement();
+        newSwitch.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,35);
+        //playerPosList->getHeadElement().pos->x =(mainGameMechsRef->getBoardSizeX())-2;
+        playerPosList->removeHead();
+        playerPosList->insertHead(newSwitch);
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
-    else if (playerPos.pos->y >= 14)
+    else if (playerPosList->getHeadElement().pos->y >= mainGameMechsRef->getBoardSizeY()-1)
     {
         // board[player.y][player.x] = 35;
         // player.y = 1;
         // board[player.y][player.x] = player.symbol;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,35);
-        playerPos.pos->y =1;
-        mainGameMechsRef->setElementMap(playerPos.pos->y,playerPos.pos->x,playerPos.symbol);
+        int new_x = playerPosList->getHeadElement().pos->x;
+        int new_y = 1;
+        objPos newSwitch = playerPosList->getHeadElement();
+        newSwitch.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,35);
+        //playerPosList->getHeadElement().pos->x =(mainGameMechsRef->getBoardSizeX())-2;
+        playerPosList->removeHead();
+        playerPosList->insertHead(newSwitch);
+        mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
 }
 
