@@ -1,13 +1,38 @@
 #include "GameMechs.h"
+#include "MacUILib.h"
 
 GameMechs::GameMechs()
 {
-    
+    boardSizeX=30;
+    boardSizeY=15;
+    input = 0;
+    exitFlag = false;
+    loseFlag = false;
+    // implement food later
+    map=new char*[boardSizeY];
+    for (int i =0; i<boardSizeY;i++)
+    {
+        map[i] = new char[boardSizeX];
+        for (int j=0; j<boardSizeX;j++)
+        {
+            if(i==0 || i==boardSizeY-1)
+            {
+                map[i][j] = 35;
+            }
+            else if (j==0 || j==boardSizeX-1)
+            {
+                map[i][j] = 35;
+            }
+            else
+            {
+                map[i][j] = 32;
+            }
+        }
+    }
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
 {
-    // i implemented this for check iteration 1A
     boardSizeX = boardX;
     boardSizeY = boardY;
     input = 0;
@@ -40,17 +65,17 @@ GameMechs::GameMechs(int boardX, int boardY)
 // yes
 GameMechs::~GameMechs()
 {
-    
+    //for Part 2B, keep blank for now -JW
 }
 
 bool GameMechs::getExitFlagStatus() const
 {
-
+    return exitFlag;
 }
 
 bool GameMechs::getLoseFlagStatus() const
 {
-
+    return loseFlag;
 }
     
 
@@ -61,12 +86,12 @@ char GameMechs::getInput() const
 
 int GameMechs::getScore() const
 {
-
+    //implement after Part 2B as food is needed to increase score -JW
 }
 
 void GameMechs::incrementScore()
 {
-    
+    //same as above -JW
 }
 
 int GameMechs::getBoardSizeX() const
@@ -82,12 +107,12 @@ int GameMechs::getBoardSizeY() const
 
 void GameMechs::setExitTrue()
 {
-
+    exitFlag=true;
 }
 
 void GameMechs::setLoseFlag()
 {
-    
+    loseFlag=true;
 }
 
 void GameMechs::setInput(char this_input)
