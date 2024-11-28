@@ -3,6 +3,7 @@
 #include "objPos.h"
 #include "player.h"
 #include "GameMechs.h"
+#include "Food.h"
 
 using namespace std;
 
@@ -11,6 +12,7 @@ using namespace std;
 bool exitFlag;
 GameMechs *gamem ;
 Player *playerpt;
+Food *foodpt;
 //char** map;
 // char input;
 
@@ -49,6 +51,7 @@ void Initialize(void)
     exitFlag = false;
     gamem = new GameMechs(30,15);
     playerpt = new Player(gamem);
+    foodpt = new Food();
     // map=new char*[15];
     // for (int i =0; i<15;i++)
     // {
@@ -93,6 +96,8 @@ void GetInput(void)
 
 void RunLogic(void)
 {
+    foodpt->generateFood(playerpt->getPlayerPos());
+
     if (gamem->getInput() != 0)
     {
         switch(gamem->getInput())

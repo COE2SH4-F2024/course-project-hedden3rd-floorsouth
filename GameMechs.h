@@ -20,7 +20,7 @@ class GameMechs
         int boardSizeX;
         int boardSizeY;
 
-        objPos food;
+        //removed food call as everything related to food is done in Food.cpp & Food.h -JW
         char** map;
 
     public:
