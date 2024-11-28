@@ -37,10 +37,13 @@ objPos& objPos :: operator=(const objPos &oP)
 {
     if(this != &oP)
     {
+        //delete this->pos;
+        //this->pos = new Pos;
         this->pos->x = oP.pos->x;
         this->pos->y = oP.pos->y;
         this->symbol = oP.symbol;
     }
+    return *this;
 }
 
 

@@ -41,6 +41,7 @@ objPosArrayList& objPosArrayList :: operator= (const objPosArrayList &oL)
             this->aList[i] = oL.aList[i];
         }
     }
+    return *this;
 }
 
 int objPosArrayList::getSize() const

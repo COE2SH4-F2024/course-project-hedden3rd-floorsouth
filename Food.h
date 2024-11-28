@@ -13,7 +13,7 @@
             GameMechs* mainGameMechRef;
 
         public:
-            Food();
+            Food(GameMechs* thisGMRef);
             ~Food();
 
             void generateFood(objPosArrayList *blockOff);

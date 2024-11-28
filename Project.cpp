@@ -9,7 +9,6 @@ using namespace std;
 
 #define DELAY_CONST 100000
 
-bool exitFlag;
 GameMechs *gamem ;
 Player *playerpt;
 Food *foodpt;
@@ -30,7 +29,7 @@ int main(void)
 
     Initialize();
 
-    while(exitFlag == false)  
+    while(gamem->getExitFlagStatus() == false)  
     {
         GetInput();
         RunLogic();
@@ -48,10 +47,9 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    exitFlag = false;
     gamem = new GameMechs(30,15);
-    playerpt = new Player(gamem);
-    foodpt = new Food();
+    foodpt = new Food(gamem);
+    playerpt = new Player(gamem,foodpt);
     // map=new char*[15];
     // for (int i =0; i<15;i++)
     // {
@@ -78,6 +76,8 @@ void Initialize(void)
         gamem->setElementMap(playerpt->getPlayerPos()->getElement(i).pos->y,playerpt->getPlayerPos()->getElement(i).pos->x,playerpt->getPlayerPos()->getElement(i).symbol);
     }
     
+    foodpt->generateFood(playerpt->getPlayerPos());
+    gamem->setElementMap(foodpt->getFoodPos().pos->y,foodpt->getFoodPos().pos->x,foodpt->getFoodPos().symbol);
 }
 
 void GetInput(void)
@@ -96,14 +96,15 @@ void GetInput(void)
 
 void RunLogic(void)
 {
-    foodpt->generateFood(playerpt->getPlayerPos());
+    //foodpt->generateFood(playerpt->getPlayerPos());
+    gamem->setElementMap(foodpt->getFoodPos().pos->y,foodpt->getFoodPos().pos->x,foodpt->getFoodPos().symbol);
 
     if (gamem->getInput() != 0)
     {
         switch(gamem->getInput())
         {
             case 32:
-            exitFlag = true;
+                gamem->setExitTrue();
             break;
         }
     }
@@ -115,6 +116,7 @@ void RunLogic(void)
 void DrawScreen(void)
 {
     MacUILib_clearScreen();   
+    MacUILib_printf("Your score is %d\n",gamem->getScore());
     for(int i=0; i<15;i++)
     {
         for(int j=0; j<30;j++)
@@ -122,6 +124,14 @@ void DrawScreen(void)
             MacUILib_printf("%c",gamem->getElementMap(i,j));
         }
         MacUILib_printf("\n");
+    }
+    if(gamem->getExitFlagStatus()&&gamem->getLoseFlagStatus())
+    {
+        MacUILib_printf("You lose !\n");
+    }
+    else if(gamem->getExitFlagStatus())
+    {
+        MacUILib_printf("You win\n");
     }
     //MacUILib_clearScreen();
      

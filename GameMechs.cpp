@@ -8,6 +8,7 @@ GameMechs::GameMechs()
     input = 0;
     exitFlag = false;
     loseFlag = false;
+    score = 0;
     // implement food later
     map=new char*[boardSizeY];
     for (int i =0; i<boardSizeY;i++)
@@ -38,6 +39,7 @@ GameMechs::GameMechs(int boardX, int boardY)
     input = 0;
     exitFlag = false;
     loseFlag = false;
+    score = 0;
     // implement food later
     map=new char*[boardSizeY];
     for (int i =0; i<boardSizeY;i++)
@@ -87,11 +89,13 @@ char GameMechs::getInput() const
 int GameMechs::getScore() const
 {
     //implement after Part 2B as food is needed to increase score -JW
+    return score;
 }
 
 void GameMechs::incrementScore()
 {
     //same as above -JW
+    score++;
 }
 
 int GameMechs::getBoardSizeX() const
