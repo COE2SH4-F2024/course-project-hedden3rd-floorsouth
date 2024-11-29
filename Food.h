@@ -15,6 +15,8 @@
         public:
             Food(GameMechs* thisGMRef);
             ~Food();
+            Food(const Food &F);
+		    Food& operator=(const Food &F);
 
             void generateFood(objPosArrayList *blockOff);
 

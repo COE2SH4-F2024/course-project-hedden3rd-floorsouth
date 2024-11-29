@@ -2,16 +2,36 @@
 #include <stdlib.h>
 #include <time.h>
 
-Food::Food(GameMechs* thisGMRef){
+Food::Food(GameMechs* thisGMRef)
+{
     this->foodPos=objPos(1,1,38);
     this->mainGameMechRef =thisGMRef;
 }
 
-Food::~Food(){
-    //delete[] mainGameMechRef;
+Food::~Food()
+{
+    delete mainGameMechRef;
 }
 
-void Food::generateFood(objPosArrayList *blockOff){
+Food::Food(const Food &F)
+{
+    if (this != &F)
+    {
+        this->foodPos = F.foodPos;
+        this->mainGameMechRef = F.mainGameMechRef;
+    }
+}
+Food& Food ::operator=(const Food &F)
+{
+    if (this != &F)
+        {
+            this->foodPos = F.foodPos;
+            this->mainGameMechRef = F.mainGameMechRef;
+        }
+}
+
+void Food::generateFood(objPosArrayList *blockOff)
+{
     //generate food randomly except at blockOff coordinates
     bool overlap=true;
     srand(time(NULL));
@@ -33,10 +53,6 @@ void Food::generateFood(objPosArrayList *blockOff){
                 break;
             }
         }
-
-        // if (overlap==false){
-        //     break;
-        // }
     }
     this->foodPos.pos->x=x;
     this->foodPos.pos->y=y;
@@ -44,7 +60,8 @@ void Food::generateFood(objPosArrayList *blockOff){
     mainGameMechRef->setElementMap(this->foodPos.pos->y,this->foodPos.pos->x,this->foodPos.symbol);
 }
 
-objPos Food::getFoodPos() const{
+objPos Food::getFoodPos() const
+{
     //get position
     return foodPos;
 }

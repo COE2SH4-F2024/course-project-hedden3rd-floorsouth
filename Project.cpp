@@ -12,8 +12,6 @@ using namespace std;
 GameMechs *gamem ;
 Player *playerpt;
 Food *foodpt;
-//char** map;
-// char input;
 
 void Initialize(void);
 void GetInput(void);
@@ -47,37 +45,12 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    gamem = new GameMechs(30,15);
+    gamem = new GameMechs();
     foodpt = new Food(gamem);
     playerpt = new Player(gamem,foodpt);
-    // map=new char*[15];
-    // for (int i =0; i<15;i++)
-    // {
-    //     map[i] = new char[30];
-    //     for (int j=0; j<30;j++)
-    //     {
-    //         if(i==0 || i==14)
-    //         {
-    //             map[i][j] = 35;
-    //         }
-    //         else if (j==0 || j==29)
-    //         {
-    //             map[i][j] = 35;
-    //         }
-    //         else
-    //         {
-    //             map[i][j] = 32;
-    //         }
-    //     }
-    // }
-    //map[playerpt->getPlayerPos().pos->y][playerpt->getPlayerPos().pos->x] = 42;
-    for (int i=0;i<playerpt->getPlayerPos()->getSize();i++)
-    {
-        gamem->setElementMap(playerpt->getPlayerPos()->getElement(i).pos->y,playerpt->getPlayerPos()->getElement(i).pos->x,playerpt->getPlayerPos()->getElement(i).symbol);
-    }
-    
+
+    gamem->setElementMap(playerpt->getPlayerPos()->getHeadElement().pos->y,playerpt->getPlayerPos()->getHeadElement().pos->x,playerpt->getPlayerPos()->getHeadElement().symbol);
     foodpt->generateFood(playerpt->getPlayerPos());
-    gamem->setElementMap(foodpt->getFoodPos().pos->y,foodpt->getFoodPos().pos->x,foodpt->getFoodPos().symbol);
 }
 
 void GetInput(void)
@@ -85,20 +58,15 @@ void GetInput(void)
    if (MacUILib_hasChar() != 0)
     {
         gamem->setInput( MacUILib_getChar());
-        //input = MacUILib_getChar();
     }
     else
     {
         gamem->setInput(0);
-        //input = 0;
     }
 }
 
 void RunLogic(void)
 {
-    //foodpt->generateFood(playerpt->getPlayerPos());
-    gamem->setElementMap(foodpt->getFoodPos().pos->y,foodpt->getFoodPos().pos->x,foodpt->getFoodPos().symbol);
-
     if (gamem->getInput() != 0)
     {
         switch(gamem->getInput())
@@ -117,9 +85,9 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen();   
     MacUILib_printf("Your score is %d\n",gamem->getScore());
-    for(int i=0; i<15;i++)
+    for(int i=0; i<gamem->getBoardSizeY();i++)
     {
-        for(int j=0; j<30;j++)
+        for(int j=0; j<gamem->getBoardSizeX();j++)
         {
             MacUILib_printf("%c",gamem->getElementMap(i,j));
         }
@@ -146,6 +114,10 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     //delete[] playerpt;
+    //gamem->~GameMechs();
+    //playerpt->~Player();
+    //foodpt->~Food();
+    //gamem->~GameMechs();
     MacUILib_clearScreen();    
 
     MacUILib_uninit();

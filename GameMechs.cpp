@@ -9,7 +9,6 @@ GameMechs::GameMechs()
     exitFlag = false;
     loseFlag = false;
     score = 0;
-    // implement food later
     map=new char*[boardSizeY];
     for (int i =0; i<boardSizeY;i++)
     {
@@ -40,7 +39,6 @@ GameMechs::GameMechs(int boardX, int boardY)
     exitFlag = false;
     loseFlag = false;
     score = 0;
-    // implement food later
     map=new char*[boardSizeY];
     for (int i =0; i<boardSizeY;i++)
     {
@@ -68,6 +66,13 @@ GameMechs::GameMechs(int boardX, int boardY)
 GameMechs::~GameMechs()
 {
     //for Part 2B, keep blank for now -JW
+    for(int i=0;i<boardSizeY;i++)
+    {
+        delete[] map[i];
+        //map[i]=NULL;
+    }
+    delete [] map;
+    //map = NULL;
 }
 
 bool GameMechs::getExitFlagStatus() const
@@ -79,7 +84,7 @@ bool GameMechs::getLoseFlagStatus() const
 {
     return loseFlag;
 }
-    
+
 
 char GameMechs::getInput() const
 {

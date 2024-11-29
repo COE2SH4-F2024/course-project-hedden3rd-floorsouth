@@ -6,24 +6,18 @@ Player::Player(GameMechs* thisGMRef,Food* thisFRef)
     foodRef = thisFRef;
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
-    //playerPos = objPos(15,9,42);
-    // more actions to be included
     playerPosList = new objPosArrayList;
-    // playerPosList->insertHead(objPos(12,9,42));
-    // playerPosList->insertTail(objPos(13,9,42));
-    // playerPosList->insertTail(objPos(14,9,42));
-    playerPosList->insertTail(objPos(15,9,42));
-    // playerPosList->insertTail(objPos(16,9,42));
-    // playerPosList->insertTail(objPos(17,9,42));
-    // playerPosList->insertTail(objPos(18,9,42));
-    // playerPosList->insertTail(objPos(19,9,42));
+    playerPosList->insertHead(objPos(15,9,42));
 }
 
 
 Player::~Player()
 {
     // delete any heap members here
-    delete[] mainGameMechsRef;
+    delete mainGameMechsRef;
+    delete foodRef;
+    //delete playerPosList;
+    playerPosList->~objPosArrayList();
 }
 
 Player::Player(const Player &p)
@@ -33,10 +27,6 @@ Player::Player(const Player &p)
             this->mainGameMechsRef = p.mainGameMechsRef;
             this->myDir = p.myDir;
             this->playerPosList = new objPosArrayList;
-            // for (int i=0;i<p.playerPosList->getSize();i++)
-            // {
-            //     this->playerPosList[i] = p.playerPosList[i];
-            // }
             this->playerPosList = p.playerPosList;
         }   
 }
@@ -47,10 +37,6 @@ Player& Player :: operator= (const Player &p)
     {
         this->mainGameMechsRef = p.mainGameMechsRef;
         this->myDir = p.myDir;
-        // for (int i=0;i<p.playerPosList->getSize();i++)
-        // {
-        //     this->playerPosList[i] = p.playerPosList[i];
-        // }
         this->playerPosList = p.playerPosList;
 
     }
@@ -60,7 +46,6 @@ Player& Player :: operator= (const Player &p)
 objPosArrayList* Player::getPlayerPos() const
 {
     // return the reference to the playerPos arrray list
-    //return playerPos;
     return playerPosList;
 }
 
@@ -146,189 +131,176 @@ void Player::movePlayer()
     // PPA3 Finite State Machine logic
     if (myDir == LEFT)
     {
+        //make a new instances of the head element & update the coordinates;
         int new_x = playerPosList->getHeadElement().pos->x -1;
         int new_y = playerPosList->getHeadElement().pos->y;
         objPos newHead = playerPosList->getHeadElement();
         newHead.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        // add the new head to the list
         playerPosList->insertHead(newHead);
+        // check for collision
         if(checkSelfCollision())
         {
             mainGameMechsRef->setExitTrue();
             mainGameMechsRef->setLoseFlag();
         }
+        //check for consumption
         if(checkFoodConsumption()== false)
         {
+            //remove tail
             mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
             playerPosList->removeTail();
             mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
         }
         else
         {
+            //generate new food
             mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
             foodRef->generateFood(playerPosList);
             mainGameMechsRef->incrementScore();
         }
-        // playerPosList->getHeadElement().pos->y = new_y;
-        // playerPosList->getHeadElement().pos->x = new_x;
-        // player.x-=1;
-        // board[player.y][player.x] = player.symbol;
     }
     else if (myDir == RIGHT)
     {
-        // board[player.y][player.x] = 32;
-        // player.x +=1;
-        // board[player.y][player.x] = player.symbol;
+        // generate new instances of head element
         int new_x = playerPosList->getHeadElement().pos->x +1;
         int new_y = playerPosList->getHeadElement().pos->y;
         objPos newHead = playerPosList->getHeadElement();
         newHead.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
-        mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
+        // insert new head
         playerPosList->insertHead(newHead);
+        //check for collision
         if(checkSelfCollision())
         {
             mainGameMechsRef->setExitTrue();
             mainGameMechsRef->setLoseFlag();
         }
+        // check food consumption
         if(checkFoodConsumption()== false)
         {
+           //remove tail
             mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
             playerPosList->removeTail();
             mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
         }
         else
         {
+            // add score
             mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
             foodRef->generateFood(playerPosList);
             mainGameMechsRef->incrementScore();
         }
-        //playerPosList->removeTail();
-        // playerPosList->getHeadElement().pos->y = new_y;
-        // playerPosList->getHeadElement().pos->x = new_x;
-        //mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
     else if (myDir == UP)
     {
-        // board[player.y][player.x] = 32;
-        // player.y -=1;
-        // board[player.y][player.x] = player.symbol;
+        // make a new instance of head element with new coordinates
         int new_x = playerPosList->getHeadElement().pos->x;
         int new_y = playerPosList->getHeadElement().pos->y-1;
         objPos newHead = playerPosList->getHeadElement();
         newHead.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
-        mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
+        //add new head
         playerPosList->insertHead(newHead);
+        // check collisiom
         if(checkSelfCollision())
         {
             mainGameMechsRef->setExitTrue();
             mainGameMechsRef->setLoseFlag();
         }
+        // check food consumption
         if(checkFoodConsumption()== false)
         {
+            // remove tail
             mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
             playerPosList->removeTail();
             mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
         }
         else
         {
+            // increment score
             mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
             foodRef->generateFood(playerPosList);
             mainGameMechsRef->incrementScore();
         }
-        //playerPosList->removeTail();
-        // playerPosList->getHeadElement().pos->y = new_y;
-        // playerPosList->getHeadElement().pos->x = new_x;
-        //mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
     else if (myDir == DOWN)
     {
-        // board[player.y][player.x] = 32;
-        // player.y +=1;
-        // board[player.y][player.x] = player.symbol;
+        // make new instances of head element with new coordinates
         int new_x = playerPosList->getHeadElement().pos->x;
         int new_y = playerPosList->getHeadElement().pos->y+1;
         objPos newHead = playerPosList->getHeadElement();
         newHead.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
-        mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
         playerPosList->insertHead(newHead);
+        // check collision
         if(checkSelfCollision())
         {
             mainGameMechsRef->setExitTrue();
             mainGameMechsRef->setLoseFlag();
         }
+        // check food consumption
         if(checkFoodConsumption()== false)
         {
+            // remove tail
             mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
             playerPosList->removeTail();
             mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
         }
         else
         {
+            // increment score
             mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
             foodRef->generateFood(playerPosList);
             mainGameMechsRef->incrementScore();
         }
-       // playerPosList->removeTail();
-        // playerPosList->getHeadElement().pos->y = new_y;
-        // playerPosList->getHeadElement().pos->x = new_x;
-        //mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
     
     if (playerPosList->getHeadElement().pos->x <= 0)
     {
-        // board[player.y][player.x] = 35;
-        // player.x = 18;
-        // board[player.y][player.x] = player.symbol;
+        // generate new coordinate and make a new instances
         int new_x = (mainGameMechsRef->getBoardSizeX())-2;
         int new_y = playerPosList->getHeadElement().pos->y;
         objPos newSwitch = playerPosList->getHeadElement();
         newSwitch.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        // move the head position
         mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,35);
-        //playerPosList->getHeadElement().pos->x =(mainGameMechsRef->getBoardSizeX())-2;
         playerPosList->removeHead();
         playerPosList->insertHead(newSwitch);
         mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
     else if (playerPosList->getHeadElement().pos->x >= mainGameMechsRef->getBoardSizeX()-1)
     {
-        // board[player.y][player.x] = 35;
-        // player.x = 1;
-        // board[player.y][player.x] = player.symbol;
+        // generate new coordinate and make a new instances
         int new_x = 1;
         int new_y = playerPosList->getHeadElement().pos->y;
         objPos newSwitch = playerPosList->getHeadElement();
         newSwitch.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        // move head position
         mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,35);
-        //playerPosList->getHeadElement().pos->x =(mainGameMechsRef->getBoardSizeX())-2;
         playerPosList->removeHead();
         playerPosList->insertHead(newSwitch);
         mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
     else if (playerPosList->getHeadElement().pos->y <= 0)
     {
-        // board[player.y][player.x] = 35;
-        // player.y = 8;
-        // board[player.y][player.x] = player.symbol;
+        // generate new coordinate and make a new instances
         int new_x = playerPosList->getHeadElement().pos->x;
         int new_y = (mainGameMechsRef->getBoardSizeY())-2;
         objPos newSwitch = playerPosList->getHeadElement();
         newSwitch.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        // move head position
         mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,35);
-        //playerPosList->getHeadElement().pos->x =(mainGameMechsRef->getBoardSizeX())-2;
         playerPosList->removeHead();
         playerPosList->insertHead(newSwitch);
         mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
     }
     else if (playerPosList->getHeadElement().pos->y >= mainGameMechsRef->getBoardSizeY()-1)
     {
-        // board[player.y][player.x] = 35;
-        // player.y = 1;
-        // board[player.y][player.x] = player.symbol;
+        // generate new coordinate and make a new instances
         int new_x = playerPosList->getHeadElement().pos->x;
         int new_y = 1;
         objPos newSwitch = playerPosList->getHeadElement();
         newSwitch.setObjPos(new_x,new_y,playerPosList->getHeadElement().symbol);
+        // move head position
         mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,35);
-        //playerPosList->getHeadElement().pos->x =(mainGameMechsRef->getBoardSizeX())-2;
         playerPosList->removeHead();
         playerPosList->insertHead(newSwitch);
         mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);

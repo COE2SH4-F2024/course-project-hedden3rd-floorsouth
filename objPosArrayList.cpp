@@ -13,7 +13,7 @@ objPosArrayList::objPosArrayList()
 
 objPosArrayList::~objPosArrayList()
 {
-    delete[] aList;
+    delete []aList;
 }
 
 objPosArrayList::objPosArrayList(const objPosArrayList &oL)
