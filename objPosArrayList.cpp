@@ -1,9 +1,8 @@
 #include "objPosArrayList.h"
 #include <stdexcept>
 
-// Check lecture contents on general purpose array list construction, 
-// and modify it to support objPos array list construction.
 
+//initialization routine for an array of capacity 200 and a used length of 0
 objPosArrayList::objPosArrayList()
 {
     arrayCapacity = 200;
@@ -11,11 +10,13 @@ objPosArrayList::objPosArrayList()
     aList = new objPos[arrayCapacity];
 }
 
+//destructor routine; deletes pointer to [objPos] object created in the .h file
 objPosArrayList::~objPosArrayList()
 {
     delete []aList;
 }
 
+//copy constructor
 objPosArrayList::objPosArrayList(const objPosArrayList &oL)
 {
     if (this != &oL)
@@ -30,6 +31,7 @@ objPosArrayList::objPosArrayList(const objPosArrayList &oL)
         }   
 }
 
+//copy assignment operator
 objPosArrayList& objPosArrayList :: operator= (const objPosArrayList &oL)
 {
     if (this != &oL)
@@ -44,11 +46,14 @@ objPosArrayList& objPosArrayList :: operator= (const objPosArrayList &oL)
     return *this;
 }
 
+//getter for the used length of the array
 int objPosArrayList::getSize() const
 {
     return listSize;
 }
 
+//shifts the position of all objects in the array ahead by 1 and uses the inputted parameter [objPos] object as the first entry
+//also increments the used size by 1
 void objPosArrayList::insertHead(objPos thisPos)
 {
     if (listSize != arrayCapacity)
@@ -66,6 +71,8 @@ void objPosArrayList::insertHead(objPos thisPos)
     }   
 }
 
+//adds the inputted parameter [objPos] object as the next entry after the last non-NULL entry
+//also increments the used size by 1
 void objPosArrayList::insertTail(objPos thisPos)
 {
     if (listSize != arrayCapacity)
@@ -77,6 +84,8 @@ void objPosArrayList::insertTail(objPos thisPos)
     }   
 }
 
+//adds the inputted parameter [objPos] object in the index specified from the input and shifts everything after it down by 1
+//also increments the used length by 1
 void objPosArrayList::insertIndex(objPos thisPos,int index)
 {
     if (listSize != arrayCapacity)
@@ -94,6 +103,8 @@ void objPosArrayList::insertIndex(objPos thisPos,int index)
     }   
 }
 
+//removes the first entry in the array and shifts every other entry up by 1
+//also decreases the used length by 1
 void objPosArrayList::removeHead()
 {
     if (listSize != arrayCapacity)
@@ -108,6 +119,8 @@ void objPosArrayList::removeHead()
     }
 }
 
+//removes the last non-NULL entry in the array by setting its position and symbol to 0,0, and NULL respectively
+//also decreases the used length by 1
 void objPosArrayList::removeTail()
 {
    if (listSize != 0)
@@ -118,6 +131,9 @@ void objPosArrayList::removeTail()
         listSize-=1; 
     } 
 }
+
+//removes the entry at the specified index in the parameter input and shifts every entry after the index up by 1
+//also decreases the used length by 1
 void objPosArrayList::removeIndex(int index)
 {
     if (listSize != arrayCapacity)
@@ -132,22 +148,26 @@ void objPosArrayList::removeIndex(int index)
     }
 }
 
+//getter for the first object in the array
 objPos objPosArrayList::getHeadElement() const
 {
     return aList[0];
 }
 
+//getter for the last object in the array
 objPos objPosArrayList::getTailElement() const
 {
     return aList[listSize-1];
 }
 
+//getter for the object in the specified index in the parameter input
 objPos objPosArrayList::getElement(int index) const
 {
     if(index<arrayCapacity)
     {
         return aList[index];
     }
+    //catches indices that are out of the range of the array
     else
     {
         throw std::out_of_range("Invalid indexes.");

@@ -1,6 +1,7 @@
 #include "GameMechs.h"
 #include "MacUILib.h"
 
+//initialize routine for a standard board size of 30w x 15l
 GameMechs::GameMechs()
 {
     boardSizeX=30;
@@ -31,6 +32,7 @@ GameMechs::GameMechs()
     }
 }
 
+//initialization routine for a custom size game board; dimensions are specified in parameters
 GameMechs::GameMechs(int boardX, int boardY)
 {
     boardSizeX = boardX;
@@ -61,85 +63,92 @@ GameMechs::GameMechs(int boardX, int boardY)
     }
 }
 
-// do you need a destructor?
-// yes
+//destructor routine; deletes map elements from heap
 GameMechs::~GameMechs()
 {
-    //for Part 2B, keep blank for now -JW
     for(int i=0;i<boardSizeY;i++)
     {
         delete[] map[i];
-        //map[i]=NULL;
+        //map[i]=NULL;//CHECK IF THIS IS NEEDED
     }
     delete [] map;
-    //map = NULL;
+    //map = NULL;//CHECK IF THIS IS NEEDED
 }
 
+//getter for exit flag status
 bool GameMechs::getExitFlagStatus() const
 {
     return exitFlag;
 }
 
+//getter for loss flag status
 bool GameMechs::getLoseFlagStatus() const
 {
     return loseFlag;
 }
 
-
+//getter for current input
 char GameMechs::getInput() const
 {
     return input;
 }
 
+//getter for current score
 int GameMechs::getScore() const
 {
-    //implement after Part 2B as food is needed to increase score -JW
     return score;
 }
 
-void GameMechs::incrementScore()
-{
-    //same as above -JW
-    score++;
-}
-
+//getter for the width of the game board
 int GameMechs::getBoardSizeX() const
 {
     return boardSizeX;
 }
 
+//getter for the length of the game board
 int GameMechs::getBoardSizeY() const
 {
     return boardSizeY;
 }
 
-
+//setter to change the exit flag status to true
 void GameMechs::setExitTrue()
 {
     exitFlag=true;
 }
 
+//setter to change the loss flag status to true
 void GameMechs::setLoseFlag()
 {
     loseFlag=true;
 }
 
+//setter to update the input to a new one detected in [project]
 void GameMechs::setInput(char this_input)
 {
     input = this_input;
 }
 
+//setter to clear the input; setting it to NULL
 void GameMechs::clearInput()
 {
     input = 0;
 }
 
-// More methods should be added here
-// this is the method for the map to store the display
+//setter to increase the score by 1
+void GameMechs::incrementScore()
+{
+    score++;
+}
+
+//this is the method for the map to store the display
+//getter for the 2D array for game board visuals
 char GameMechs::getElementMap(int y,int x)
 {
     return map[y][x];
 }
+
+//setter for a space in the 2D array for game board visuals; unique symbols can be inputted via the parameter sym
 void GameMechs::setElementMap(int y,int x, char sym)
 {
     map[y][x]=sym;
