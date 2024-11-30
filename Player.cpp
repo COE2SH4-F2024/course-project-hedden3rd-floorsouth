@@ -310,15 +310,15 @@ void Player::movePlayer()
 // More methods to be added
 bool Player::checkFoodConsumption()
 {
-    if (this->playerPosList->getHeadElement().pos->x == foodRef->getFoodPos().pos->x&&this->playerPosList->getHeadElement().pos->y == foodRef->getFoodPos().pos->y)
-    {
-        return true;
+    for (int i=0; i<5; i++){
+        if (this->playerPosList->getHeadElement().pos->x == foodRef->getFoodPos(i).pos->x&&this->playerPosList->getHeadElement().pos->y == foodRef->getFoodPos(i).pos->y){
+            return true;
+        }
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
+
 bool Player::checkSelfCollision()
 {
     for (int i =1;i<playerPosList->getSize();i++)

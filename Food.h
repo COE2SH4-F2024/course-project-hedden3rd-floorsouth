@@ -8,7 +8,7 @@
 
     class Food{
         private:
-            objPos foodPos;
+            objPosArrayList* foodBucket;
             
             GameMechs* mainGameMechRef;
 
@@ -20,7 +20,7 @@
 
             void generateFood(objPosArrayList *blockOff);
 
-            objPos getFoodPos() const;
+            objPos getFoodPos(int index) const;
     };
 
 
