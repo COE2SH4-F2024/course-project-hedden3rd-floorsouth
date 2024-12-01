@@ -116,7 +116,7 @@ void DrawScreen(void)
     }
     else if(gamem->getExitFlagStatus())
     {
-        MacUILib_printf("You win\n");
+        MacUILib_printf("You quit\n");
     }
     //MacUILib_clearScreen();//CHECK IF THIS IS NEEDED
      
@@ -135,7 +135,7 @@ void CleanUp(void)
     //playerpt->~Player();
     //foodpt->~Food();
     //gamem->~GameMechs();
-    MacUILib_clearScreen();    
+    //MacUILib_clearScreen();    
 
     MacUILib_uninit();
 }
