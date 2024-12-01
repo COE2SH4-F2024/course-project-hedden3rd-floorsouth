@@ -155,9 +155,9 @@ void Player::movePlayer()
         else
         {
             //generate new food
-            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
             foodRef->generateFood(playerPosList);
             mainGameMechsRef->incrementScore();
+            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
         }
     }
     else if (myDir == RIGHT)
@@ -186,9 +186,9 @@ void Player::movePlayer()
         else
         {
             // add score
-            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
             foodRef->generateFood(playerPosList);
             mainGameMechsRef->incrementScore();
+            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
         }
     }
     else if (myDir == UP)
@@ -217,9 +217,9 @@ void Player::movePlayer()
         else
         {
             // increment score
-            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
             foodRef->generateFood(playerPosList);
             mainGameMechsRef->incrementScore();
+            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
         }
     }
     else if (myDir == DOWN)
@@ -247,9 +247,9 @@ void Player::movePlayer()
         else
         {
             // increment score
-            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
             foodRef->generateFood(playerPosList);
             mainGameMechsRef->incrementScore();
+            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
         }
     }
     
@@ -311,11 +311,11 @@ void Player::movePlayer()
 bool Player::checkFoodConsumption()
 {
     for (int i=0; i<5; i++){
-        if (this->playerPosList->getHeadElement().pos->x == foodRef->getFoodPos(i).pos->x&&this->playerPosList->getHeadElement().pos->y == foodRef->getFoodPos(i).pos->y){
+        if (this->playerPosList->getHeadElement().pos->x == foodRef->getFoodPos()->getElement(i).pos->x&&this->playerPosList->getHeadElement().pos->y == foodRef->getFoodPos()->getElement(i).pos->y)
+        {
             return true;
         }
     }
-
     return false;
 }
 

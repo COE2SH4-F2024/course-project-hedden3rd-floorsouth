@@ -8,6 +8,10 @@ Food::Food(GameMechs* thisGMRef)
 {
     //sets up foodBucket as an [objPosArrayList] array object
     foodBucket=new objPosArrayList;
+    for(int i=0;i<5;i++)
+    {
+        this->foodBucket->insertTail(objPos(0,0,38));
+    }
 
     //links [gamemechs] to local variable thisGMRef
     this->mainGameMechRef =thisGMRef;
@@ -46,74 +50,49 @@ Food& Food ::operator=(const Food &F)
 void Food::generateFood(objPosArrayList *blockOff)
 {
     //generate food randomly except at blockOff coordinates
-    bool overlap=true;
-    int x[8]={};
-    int y[8]={};
-
-    //if (index==999){
-        for (int i=0; i<5; i++){
-            srand(time(NULL)+i*29);
-
-            //calls GameMech to allow different board sizes to be permitted -JW
-            x[i]=rand() % (mainGameMechRef->getBoardSizeX()-3) + 1; 
-            y[i]=rand() % (mainGameMechRef->getBoardSizeY()-3) + 1;
-        }
-    //}
-    /*else{
-        srand(time(NULL));
-
-        x[index]=rand() % (mainGameMechRef->getBoardSizeX()-3) + 1;
-        y[index]=rand() % (mainGameMechRef->getBoardSizeY()-3) + 1;
-    }*/
-
-
-    //continually tests if there is an overlap in the position of the food to be generated and blockOff coordinates
-    //exits loop when there is no overlap
-    while (overlap){
-        overlap = false;
-        for (int i=0; i<5; i++){
-            for (int j = 0; j<blockOff->getSize(); j++){
-                if ((x[i]==blockOff->getElement(j).pos->x)&&(y[i]==blockOff->getElement(j).pos->y)){
-                    srand(time(NULL)+i*j*7);
-                    x[i]=rand() % (mainGameMechRef->getBoardSizeX()-3) + 1;
-                    y[i]=rand() % (mainGameMechRef->getBoardSizeY()-3) + 1;
-
-                    overlap=true;
+    for (int i=0; i<5; i++)
+    {
+        mainGameMechRef->setElementMap(foodBucket->getHeadElement().pos->y,foodBucket->getHeadElement().pos->x,32);
+        this->foodBucket->removeHead();
+    }
+    srand(time(NULL));
+    int x=0;
+    int y=0;
+    for(int i=0;i<5;i++)
+    {
+        bool overlap=true;
+        while(overlap)
+        {
+            overlap = false;
+            x=rand() % (mainGameMechRef->getBoardSizeX()-3) + 1; 
+            y=rand() % (mainGameMechRef->getBoardSizeY()-3) + 1;
+            for(int j=0;j<i;j++)
+            {
+                if(foodBucket->getElement(j).pos->x==x&&foodBucket->getElement(j).pos->y==y)
+                {
+                    overlap== true;
                     break;
                 }
             }
-
-            for (int k=1; k<(5-i); k++){
-                if ((x[i]==x[i+k])&&(y[i]==y[i+k])){
-                    srand(time(NULL)+i*23);
-                    x[i]=rand() % (mainGameMechRef->getBoardSizeX()-3) + 1;
-                    y[i]=rand() % (mainGameMechRef->getBoardSizeY()-3) + 1;
-
-                    overlap=true;
-                    break;
+            if(overlap==false)
+            {
+                for(int k=0;k<blockOff->getSize();k++)
+                {
+                    if(blockOff->getElement(k).getObjPos().pos->x==x &&blockOff->getElement(k).getObjPos().pos->y==y)
+                    {
+                        overlap = true;
+                        break;
+                    }
                 }
             }
-
-            if (overlap){
-                break;
-            }
         }
+        this->foodBucket->insertTail(objPos(x,y,38));
+        mainGameMechRef->setElementMap(y,x,38);
     }
-
-    for (int i=0; i<5; i++){
-        mainGameMechRef->setElementMap(foodBucket->getElement(i).pos->x,foodBucket->getElement(i).pos->y,32);
-    }
-    //sets the coordinates of the food officially
-    for (int i=0; i<5; i++){
-        foodBucket->insertIndex(objPos(x[i],y[i],38),i);
-        //use set element map for food location (GameMech class) and updates visuals to prep for draw screen -JW
-        mainGameMechRef->setElementMap(y[i],x[i],38);
-    }
-  
 }
 
 //getter for the current position of the food
-objPos Food::getFoodPos(int index) const
+objPosArrayList* Food::getFoodPos() const
 {
-    return foodBucket->getElement(index);
+    return foodBucket;
 }

@@ -20,7 +20,7 @@
 
             void generateFood(objPosArrayList *blockOff);
 
-            objPos getFoodPos(int index) const;
+            objPosArrayList* getFoodPos() const;
     };
 
 
