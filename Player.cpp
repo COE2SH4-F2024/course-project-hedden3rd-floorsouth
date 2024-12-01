@@ -145,7 +145,8 @@ void Player::movePlayer()
             mainGameMechsRef->setLoseFlag();
         }
         //check for consumption
-        if(checkFoodConsumption()== false)
+        int index = checkFoodConsumption();
+        if(index== -1)
         {
             //remove tail
             mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
@@ -156,8 +157,29 @@ void Player::movePlayer()
         {
             //generate new food
             foodRef->generateFood(playerPosList);
-            mainGameMechsRef->incrementScore();
-            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            if(index==0)
+            {
+                mainGameMechsRef->incrementScore(50);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            }
+            else if (index==1)
+            {
+                mainGameMechsRef->incrementScore(10);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+                //increase snake length
+                for(int j=0;j<3;j++)
+                {
+                    int insert_x = playerPosList->getHeadElement().pos->x -1;
+                    int insert_y = playerPosList->getHeadElement().pos->y;
+                    playerPosList->insertHead(objPos(insert_x,insert_y,playerPosList->getHeadElement().symbol));
+                    mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+                }
+            }
+            else
+            {
+                mainGameMechsRef->incrementScore(1);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            }
         }
     }
     else if (myDir == RIGHT)
@@ -176,7 +198,8 @@ void Player::movePlayer()
             mainGameMechsRef->setLoseFlag();
         }
         // check food consumption
-        if(checkFoodConsumption()== false)
+        int index = checkFoodConsumption();
+        if(index== -1)
         {
            //remove tail
             mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
@@ -187,8 +210,29 @@ void Player::movePlayer()
         {
             // add score
             foodRef->generateFood(playerPosList);
-            mainGameMechsRef->incrementScore();
-            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            if(index==0)
+            {
+                mainGameMechsRef->incrementScore(50);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            }
+            else if (index==1)
+            {
+                mainGameMechsRef->incrementScore(10);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+                //increase snake length
+                for(int j=0;j<3;j++)
+                {
+                    int insert_x = (playerPosList->getHeadElement().pos->x) +1;
+                    int insert_y = playerPosList->getHeadElement().pos->y;
+                    playerPosList->insertHead(objPos(insert_x,insert_y,playerPosList->getHeadElement().symbol));
+                    mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+                }
+            }
+            else
+            {
+                mainGameMechsRef->incrementScore(1);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            }
         }
     }
     else if (myDir == UP)
@@ -207,7 +251,8 @@ void Player::movePlayer()
             mainGameMechsRef->setLoseFlag();
         }
         // check food consumption
-        if(checkFoodConsumption()== false)
+        int index = checkFoodConsumption();
+        if(index== -1)
         {
             // remove tail
             mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
@@ -216,10 +261,31 @@ void Player::movePlayer()
         }
         else
         {
-            // increment score
+            // increment score and generate new food
             foodRef->generateFood(playerPosList);
-            mainGameMechsRef->incrementScore();
-            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            if(index==0)
+            {
+                mainGameMechsRef->incrementScore(50);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            }
+            else if (index==1)
+            {
+                mainGameMechsRef->incrementScore(10);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+                // increase snake length
+                for(int j=0;j<3;j++)
+                {
+                    int insert_x = playerPosList->getHeadElement().pos->x;
+                    int insert_y = (playerPosList->getHeadElement().pos->y)-1 ;
+                    playerPosList->insertHead(objPos(insert_x,insert_y,playerPosList->getHeadElement().symbol));
+                    mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+                }
+            }
+            else
+            {
+                mainGameMechsRef->incrementScore(1);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            }
         }
     }
     else if (myDir == DOWN)
@@ -237,7 +303,8 @@ void Player::movePlayer()
             mainGameMechsRef->setLoseFlag();
         }
         // check food consumption
-        if(checkFoodConsumption()== false)
+        int index = checkFoodConsumption();
+        if(index== -1)
         {
             // remove tail
             mainGameMechsRef->setElementMap(playerPosList->getTailElement().pos->y,playerPosList->getTailElement().pos->x,32);
@@ -248,11 +315,31 @@ void Player::movePlayer()
         {
             // increment score
             foodRef->generateFood(playerPosList);
-            mainGameMechsRef->incrementScore();
-            mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            if(index==0)
+            {
+                mainGameMechsRef->incrementScore(50);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            }
+            else if (index==1)
+            {
+                mainGameMechsRef->incrementScore(10);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+                //increase snake length
+                for(int j=0;j<3;j++)
+                {
+                    int insert_x = playerPosList->getHeadElement().pos->x;
+                    int insert_y = (playerPosList->getHeadElement().pos->y) +1;
+                    playerPosList->insertHead(objPos(insert_x,insert_y,playerPosList->getHeadElement().symbol));
+                    mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+                }
+            }
+            else
+            {
+                mainGameMechsRef->incrementScore(1);
+                mainGameMechsRef->setElementMap(playerPosList->getHeadElement().pos->y,playerPosList->getHeadElement().pos->x,playerPosList->getHeadElement().symbol);
+            }
         }
     }
-    
     if (playerPosList->getHeadElement().pos->x <= 0)
     {
         // generate new coordinate and make a new instances
@@ -308,15 +395,15 @@ void Player::movePlayer()
 }
 
 // More methods to be added
-bool Player::checkFoodConsumption()
+int Player::checkFoodConsumption()
 {
     for (int i=0; i<5; i++){
         if (this->playerPosList->getHeadElement().pos->x == foodRef->getFoodPos()->getElement(i).pos->x&&this->playerPosList->getHeadElement().pos->y == foodRef->getFoodPos()->getElement(i).pos->y)
         {
-            return true;
+            return i;
         }
     }
-    return false;
+    return -1;
 }
 
 bool Player::checkSelfCollision()

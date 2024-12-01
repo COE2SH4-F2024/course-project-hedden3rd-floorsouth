@@ -136,9 +136,9 @@ void GameMechs::clearInput()
 }
 
 //setter to increase the score by 1
-void GameMechs::incrementScore()
+void GameMechs::incrementScore(int multiple)
 {
-    score++;
+    score += multiple;
 }
 
 //this is the method for the map to store the display

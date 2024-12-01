@@ -42,7 +42,7 @@ class GameMechs
         int getBoardSizeY() const;
         
         int getScore() const;
-        void incrementScore();
+        void incrementScore(int multiple);
 
         // i will implement this for the map !!
         char getElementMap(int y,int x);

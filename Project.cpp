@@ -98,6 +98,7 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen();   
     //prints the current game score from [gamemechs]
+    MacUILib_printf("Special food: @,$\n ");
     MacUILib_printf("Your score is %d\n",gamem->getScore());
     //prints the previously set up game board
     for(int i=0; i<gamem->getBoardSizeY();i++)
