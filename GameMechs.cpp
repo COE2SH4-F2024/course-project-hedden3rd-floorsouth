@@ -69,10 +69,10 @@ GameMechs::~GameMechs()
     for(int i=0;i<boardSizeY;i++)
     {
         delete[] map[i];
-        //map[i]=NULL;//CHECK IF THIS IS NEEDED
+        map[i]=NULL;
     }
     delete [] map;
-    //map = NULL;//CHECK IF THIS IS NEEDED
+    map = NULL;
 }
 
 //getter for exit flag status

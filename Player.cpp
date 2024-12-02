@@ -14,10 +14,7 @@ Player::Player(GameMechs* thisGMRef,Food* thisFRef)
 Player::~Player()
 {
     // delete any heap members here
-    delete mainGameMechsRef;
-    delete foodRef;
-    //delete playerPosList;
-    playerPosList->~objPosArrayList();
+    delete playerPosList;
 }
 
 Player::Player(const Player &p)
@@ -51,10 +48,10 @@ objPosArrayList* Player::getPlayerPos() const
 
 void Player::updatePlayerDir()
 {
-        // PPA3 input processing logic
-        char input = mainGameMechsRef->getInput(); 
-        Dir action = STOP;
-        if(input != 0)  // if not null character
+    // PPA3 input processing logic
+    char input = mainGameMechsRef->getInput(); 
+    Dir action = STOP;
+    if(input != 0)  // if not null character
     {
         switch(input)
         {                      
@@ -74,14 +71,11 @@ void Player::updatePlayerDir()
             case 115:
                 action = DOWN;
                 break;
-            // Add more key processing here
-            // Add more key processing here    
-
-
+                
             default:
                 break;
         }
-        input = 0;
+    input = 0;
     }
     if (myDir == UP || myDir == DOWN)
     {

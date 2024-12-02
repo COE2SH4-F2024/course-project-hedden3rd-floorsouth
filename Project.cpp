@@ -70,7 +70,7 @@ void GetInput(void)
     }
     else
     {
-        gamem->setInput(0);
+        gamem->clearInput();
     }
 }
 
@@ -91,7 +91,7 @@ void RunLogic(void)
     playerpt->updatePlayerDir();
     //calls function in [player] for movement logic and associated logic
     playerpt->movePlayer();
-    //gamem->clearInput();//CHECK IF THIS IS NEEDED
+    gamem->clearInput();
 }
 
 void DrawScreen(void)
@@ -118,7 +118,6 @@ void DrawScreen(void)
     {
         MacUILib_printf("You quit\n");
     }
-    //MacUILib_clearScreen();//CHECK IF THIS IS NEEDED
      
 }
 
@@ -130,12 +129,9 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
-    //delete[] playerpt;
-    //gamem->~GameMechs();
-    //playerpt->~Player();
-    //foodpt->~Food();
-    //gamem->~GameMechs();
-    //MacUILib_clearScreen();    
+    delete playerpt;
+    delete foodpt;
+    delete gamem;   
 
     MacUILib_uninit();
 }

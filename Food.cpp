@@ -17,11 +17,10 @@ Food::Food(GameMechs* thisGMRef)
     this->mainGameMechRef =thisGMRef;
 }
 
-//destructor routine; deletes the pointer to [gamemechs]
+//destructor routine
 Food::~Food()
 {
-    delete mainGameMechRef;
-    foodBucket->~objPosArrayList();
+    delete foodBucket;
 }
 
 //copy constructor
